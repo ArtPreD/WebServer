@@ -2,6 +2,7 @@ package servlets;
 
 import accounts.AccountService;
 import accounts.UserProfile;
+import database.DBService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,9 +12,11 @@ import java.io.IOException;
 
 public class SignUpServlet extends HttpServlet {
     private final AccountService accountService;
+    private final DBService dbService;
 
-    public SignUpServlet(AccountService accountService) {
+    public SignUpServlet(AccountService accountService, DBService dbService) {
         this.accountService = accountService;
+        this.dbService = dbService;
     }
 
 
@@ -28,7 +31,8 @@ public class SignUpServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }else {
-            accountService.addNewUser(new UserProfile(login, login, password));
+            //accountService.addNewUser(new UserProfile(login, login, password));
+            dbService.addUser(login, password);
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("Thanks for registration " + login + "!");
             response.setStatus(HttpServletResponse.SC_OK);
